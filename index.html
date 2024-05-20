@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + React</title>
+
+  <link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js', {
+        // type: "module",
+      });
+    }
+
+    if (!("BackgroundFetchManager" in self)) {
+      // Provide fallback downloading.
+      console.log("bad luck");
+    } else {
+      console.log("hurray");
+    }
+
+    navigator.serviceWorker.ready.then(async (swReg) => {
+      const bgFetch = await swReg.backgroundFetch.fetch(
+        "my-fetch",
+        ["https://iili.io/J4ziZ0X.jpg"],
+        {
+          title: "image download",
+          icons: [
+            {
+              sizes: "300x300",
+              src: "/src/icons/apple-icon-180.png",
+              type: "image/png",
+            },
+          ],
+          downloadTotal: 3 * 1024 * 1024,
+        },
+      );
+    });
+  </script>
+</body>
+
+</html>
